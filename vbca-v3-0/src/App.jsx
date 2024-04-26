@@ -15,20 +15,18 @@ import LoginForm from './pages/login.jsx'
 import Dashboard from './pages/dashboard.jsx'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <BrowserRouter>
       <AuthProvider>
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginForm />} />
-          {/* Apply ProtectedRoute to Dashboard route */}
-          <Route path="/dashboard" element={ <ProtectedRoute><Dashboard /></ProtectedRoute> } />
+          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
-  )
+  );
 }
+
 
 export default App
