@@ -1,37 +1,22 @@
-import { useState } from 'react'
+// src/components/Dashboard.js
+import React from 'react';
+import { Link } from 'react-router-dom';
+import './Dashboard.css'; // Importing CSS for styling
 
 function Dashboard() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-        <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src={viteLogo} className="logo" alt="Vite logo" />
-    </a>
-    <a href="https://react.dev" target="_blank">
-      <img src={reactLogo} className="logo react" alt="React logo" />
-    </a>
-    </div>
-    <h1>Vite + React</h1>
-    <div className="card">
-    <button onClick={() => setCount((count) => count + 1)}>
-      count is {count}
-    </button>
-    <p>
-      Edit <code>src/App.jsx</code> and save to test HMR
-    </p>
-    </div>
-    <p className="read-the-docs">
-    Click on the Vite and React logos to learn more
-    </p>
-        
-   
-    </>
-  )
+    return (
+        <div className="dashboard">
+            <nav className="top-nav">
+                <h1>DOMINATIO ABSCONDITA</h1>
+            </nav>
+            <div className="button-container">
+                <Link to="/game-setup" className="dashboard-button">Game Setup</Link>
+                <Link to="/missions-board" className="dashboard-button">Missions Board</Link>
+                <Link to="/shadow-ledger" className="dashboard-button">Shadow Ledger</Link>
+                <Link to="/rule-book" className="dashboard-button">Rule Book</Link>
+            </div>
+        </div>
+    );
 }
 
-export default Dashboard
-
-
-
+export default Dashboard;
