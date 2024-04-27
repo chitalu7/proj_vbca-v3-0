@@ -1,0 +1,12 @@
+ .carousel-item {
+  transition: transform 0.8s ease-in-out; /* Smoother and slower transition */
+  
+} 
+
+  
+  @media (max-width: 768px) {
+    .card {
+      width: 100%; /* Makes the card take full width on smaller screens */
+    }
+  }
+  
