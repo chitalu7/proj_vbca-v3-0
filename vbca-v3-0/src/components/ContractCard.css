@@ -1,0 +1,87 @@
+.contract-card {
+    width: 100%;
+    max-width: 300px; /* Adjust this value based on your design needs */
+    margin-bottom: 20px;
+    margin-top: 20%;
+}
+
+/* .contract-card-body {
+    min-height: 240px; 
+} */
+
+@media (min-width: 320px) {
+    .contract-card {
+        max-width: 220px; /* Larger cards on wider screens */
+        /* margin-top: 30%; */
+    }
+}
+
+
+@media (min-width: 375px) {
+    .contract-card {
+        max-width: 300px; /* Larger cards on wider screens */
+    }
+}
+
+@media (min-width: 390px) {
+    .contract-card {
+        max-width: 360px; /* Larger cards on wider screens */
+    }
+}
+
+@media (min-width: 414px) {
+    .contract-card-body {
+        max-width: 360px; /* Larger cards on wider screens */
+    }
+
+    .contract-card {
+        max-width: 360px; /* Larger cards on wider screens */
+    }
+}
+
+@media (min-width: 430px) {
+    .contract-card {
+        max-width: 400px; /* Larger cards on wider screens */
+    }
+}
+
+@media (min-width: 540px) {
+    .contract-card {
+        max-width: 360px; /* Larger cards on wider screens */
+    }
+}
+
+@media (min-width: 768px) {
+    .contract-card {
+        max-width: 600px; /* Larger cards on wider screens */
+    }
+}
+
+
+@media (min-width: 820px) {
+    .contract-card {
+        max-width: 720px; /* Larger cards on wider screens */
+    }
+}
+
+@media (min-width: 912px) {
+    .contract-card {
+        max-width: 760px; /* Larger cards on wider screens */
+    }
+}
+
+
+@media (min-width: 1024px) {
+    .contract-card {
+        max-width: 820px; /* Larger cards on wider screens */
+    }
+}
+
+@media (min-width: 1920px) {
+    .contract-card {
+        max-width: 500px; /* Larger cards on wider screens */
+    }
+}
+
+
+

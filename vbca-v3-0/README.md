@@ -14,4 +14,8 @@ TRACKING DEPENDENCIES
 4. npm install --save-dev nodemon - server side
 5. npm install react-router-dom@latest - client side
 6. npm install firebase-admin - server side for interacting with Firebase securely
+7. npm install react-slick slick-carousel styled-components - client side
+8. npm install react-bootstrap bootstrap - client side
+
+
 
