@@ -4,16 +4,24 @@ import { Link } from 'react-router-dom';
 import './Dashboard.css'; // Importing CSS for styling
 
 function Dashboard() {
+
+    // Log the screen resolution
+console.log(`Screen Resolution: ${screen.width}x${screen.height}`);
+
+    
     return (
-        <div className="dashboard">
-           
+      <div>
+        
+       <div className="dashboard">
             <div className="button-container">
-                <Link to="/game-setup" className="dashboard-button">Game Setup</Link>
+                {/* Disabled Links with inline styling and no navigation */}
+                <Link to="#" onClick={(e) => e.preventDefault()} className="dashboard-button" style={{ pointerEvents: "none", color: "gray" }}>Game Setup</Link>
                 <Link to="/missionboard" className="dashboard-button">Missions Board</Link>
-                <Link to="/shadow-ledger" className="dashboard-button">Shadow Ledger</Link>
-                <Link to="/rule-book" className="dashboard-button">Rule Book</Link>
+                <Link to="#" onClick={(e) => e.preventDefault()} className="dashboard-button" style={{ pointerEvents: "none", color: "gray" }}>Shadow Ledger</Link>
+                <Link to="#" onClick={(e) => e.preventDefault()} className="dashboard-button" style={{ pointerEvents: "none", color: "gray" }}>Rule Book</Link>
                 <Link to="/contractprofileform" className="dashboard-button">The Vault Keeper</Link>
             </div>
+        </div>
         </div>
     );
 }

@@ -20,37 +20,6 @@ html, body {
     justify-content: center;
 }
 
-/* Top navigation bar styles */
-.top-nav {
-    background-color: #1a1a1a; /* Slightly lighter black for visibility */
-    width: 100%;
-    position: fixed; /* Ensures the nav stays at the top during scroll */
-    top: 0;
-    left: 0;
-    padding: 20px;
-    font-size: 24px;
-    font-weight: bold;
-    z-index: 1000; /* Keeps nav on top of other content */
-}
-
-/* Responsive font size for top-nav */
-@media (max-width: 768px) {
-    .top-nav {
-        font-size: 18px; /* Smaller font size on smaller screens */
-    }
-}
-
-/* Link styles in the top nav */
-.top-nav-link {
-    color: white;
-    text-decoration: none; /* No underline */
-    font-size: inherit; /* Inherits size from .top-nav */
-}
-
-.top-nav-link:hover {
-    text-decoration: none; /* Ensures no underline on hover */
-}
-
 /* Button container for action buttons */
 .button-container {
     display: flex;
