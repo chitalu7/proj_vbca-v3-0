@@ -18,4 +18,8 @@ TRACKING DEPENDENCIES
 8. npm install react-bootstrap bootstrap - client side
 
 
+FILES TO LEAVE OUT
+1. All files in "Services" directory in server - server side
+2. All files in utilities in the "src" directory on the client - client side
+3. "firebase.config.js" in client root directory - client side
 
