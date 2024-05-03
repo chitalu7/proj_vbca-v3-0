@@ -1,14 +1,12 @@
+// App.jsx 
 import { useState } from 'react'
 
 // React Bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
 // Import Authentication Provider
 import { AuthProvider } from '../contexts/AuthContext.jsx'
 import { useAuth } from '../contexts/AuthContext.jsx';
-
-
 
 // React routing
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
@@ -22,7 +20,6 @@ import LoginForm from './pages/login.jsx'
 import Dashboard from './pages/dashboard.jsx'
 import MissionBoard from './pages/missionboard.jsx'
 import ContractProfileForm from './pages/ContractProfileForm.jsx';
-// import { uploadImage, saveProfileToFirestore } from './firebaseUtilityFunctions';
 import { onSave } from './utilities/freabaseUtilityFunctions';
 
 import "./App.css";
@@ -34,11 +31,10 @@ const getCapitalizedName = (email) => {
   return namePart.charAt(0).toUpperCase() + namePart.slice(1);
 };
 
-
 function App() {
   const { currentUser } = useAuth(); // Access the currentUser from the AuthProvider
 
-  console.log("The current user is " + currentUser.email);
+  //console.log("The current user is " + currentUser.email);
 
   const saveProfileToFirebase = async (name, bio, image) => {
     // Placeholder for the Firebase upload logic
@@ -63,11 +59,11 @@ return (
       <nav className="top-nav">
         <h3>DOMINATIO ABSCONDITA</h3>
         {/* Display the user's email if logged in */}
-        {currentUser && <h2>Welcome, {getCapitalizedName(currentUser.email)}</h2>}
-      </nav>
+        {/* {currentUser && <h2>Welcome, {getCapitalizedName(currentUser.email)}</h2>} */}
+        {currentUser ? <h2>Welcome, {getCapitalizedName(currentUser.email)}</h2> : <h2>Welcome, Guest</h2>}
 
+      </nav>
       <Routes>
-        
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
@@ -78,7 +74,5 @@ return (
   </BrowserRouter>
 );
 }
-
-
 
 export default App

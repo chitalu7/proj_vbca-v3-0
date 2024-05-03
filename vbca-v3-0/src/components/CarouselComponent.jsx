@@ -13,12 +13,15 @@ import { ref, onValue, update } from 'firebase/database';
 import './CarouselComponent.css';
 
 const locations = [
+  "Yume Subway", "Vezuvian Temple", "Skyline Mall", "Pelican Nightclub", 
+  "Dusk Island", "Teran Jungle", "Deserted port", "DeLuca's Heliport", 
+  "Roman Museum", "Royal Gardens", "Venus Casino", "San Buraine Highway"
 ];
 
 function CarouselComponent() {
   const [contracts, setContracts] = useState([]);
   const [loading, setLoading] = useState(true); // Optional: manage loading state
-
+  //console.log("Screen Resolution: " + screen.width + "x" + screen.height);
   useEffect(() => {
     const contractsRef = ref(database, 'profiles');
     onValue(contractsRef, (snapshot) => {
@@ -72,33 +75,58 @@ function CarouselComponent() {
       });
   };
 
+  const handleReset = (id) => {
+    const newLocation = locations[Math.floor(Math.random() * locations.length)]; // Pick a random location
+    setContracts(prevContracts =>
+      prevContracts.map(contract =>
+        contract.id === id ? { ...contract, trackLocation: newLocation, trackingStatus: false } : contract
+      )
+    );
+  };
 
+  const handleConfirmClose = (id) => {
+    const contractRef = ref(database, `profiles/${id}`);
+    update(contractRef, { contractStatus: true })  // Update contractStatus to true
+      .then(() => {
+        setContracts(prevContracts =>
+          prevContracts.map(contract =>
+            contract.id === id ? { ...contract, contractStatus: true } : contract
+          )
+        );
+      })
+      .catch(error => {
+        console.error('Error updating contract status:', error);
+      });
+  };
+  
+  
   return (
     <div className='carousel-container'>
-
       <Carousel interval={null} indicators={false}>
-            {loading ? <div>Loading...</div> : contracts.map((item) => (
-              <Carousel.Item key={item.id}>
-                <div className="d-flex justify-content-center">
-                  <ContractCard 
-                  image={item.image} 
-                  title={item.title} 
-                  description={item.description} 
-                  reward={item.reward}
-                  trackLocation={item.trackLocation}
-                  atk={item.atk} 
-                  def={item.def}
-                  onTrack={() => handleTrack(item.id)}
-                  />
-                </div>
-              </Carousel.Item>
-            ))}
+        {loading ? <div>Loading...</div> : contracts.map((item) => (
+          <Carousel.Item key={item.id}>
+            <div className="d-flex justify-content-center">
+              <ContractCard 
+                image={item.image} 
+                title={item.title} 
+                description={item.description} 
+                reward={item.reward}
+                trackLocation={item.trackLocation}
+                atk={item.atk} 
+                def={item.def}
+                contractStatus={item.contractStatus}
+                onTrack={() => handleTrack(item.id)}
+                onReset={() => handleReset(item.id)}
+                onConfirmClose={() => handleConfirmClose(item.id)}
+              />
+            </div>
+          </Carousel.Item>
+        ))}
       </Carousel>
-
-
     </div>
-    
   );
+  
+
 }
 
 export default CarouselComponent;

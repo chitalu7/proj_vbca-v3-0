@@ -13,6 +13,8 @@ function LandingPage() {
   return (
     <div className="landing-container">
         <h1>Welcome to Dominatio Abscondita</h1>
+       
+
         <button onClick={handleNavigateToLogin}>Patron</button>
         <button onClick={handleNavigateToLogin}>Vault Keeper</button>
     </div>

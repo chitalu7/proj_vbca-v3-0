@@ -1,51 +1,112 @@
-// // In ContractCard.jsx
+// In ContractCard.jsx
 import React, { useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 import { Link } from 'react-router-dom';
 
 import './ContractCard.css';
 
-function ContractCard({ image, title, description, reward, trackLocation, atk, def, onTrack }) {
-  const [isTracked, setIsTracked] = useState(false);
-  const [isEngaged, setIsEngaged] = useState(false);
-  
+function ContractCard({ image, title, description, reward, trackLocation, atk, def, onTrack, onReset, onConfirmClose, contractStatus }) {
+  const [showTrack, setShowTrack] = useState(true);
+  const [showEngage, setShowEngage] = useState(false);
+  const [showDisengage, setShowDisengage] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const handleTrackClick = () => {
     onTrack();
-    setIsTracked(true);
+    setShowTrack(false);
+    setShowEngage(true);
   };
 
   const handleEngageClick = () => {
-    setIsEngaged(true);  // This will display atk/def and hide the link
+    setShowEngage(false);
+    setShowDisengage(true);
+  };
+
+  const handleDisengageClick = () => {
+    setShowTrack(true);
+    setShowDisengage(false);
+  };
+
+  const handleCloseContract = () => {
+    setShowConfirmModal(true);
+  }
+
+  const handleCloseClick = () => {
+    setShowConfirmModal(false);
+  };
+
+  const handleConfirmClose = () => {
+    onConfirmClose();
+    setShowTrack(true);
+    setShowEngage(false);
+    setShowDisengage(false);
+    setShowConfirmModal(false);
   };
 
   return (
     <div>
       <Card className="contract-card">
-        <Card.Img variant="top" src={image} />
+        <div className="card-img-container">
+          <Card.Img variant="top" src={image} />
+          {contractStatus && (
+            <div className="contract-overlay">
+              <img src="/images/closed_contract-01.png" alt="Contract Closed" style={{ width: '100%', height: '100%', position: 'absolute', top: 0 }} />
+            </div>
+          )}
+          {showDisengage && !contractStatus && (
+            <Button className="close-button" variant="warning" onClick={handleCloseContract}>CLOSE?</Button>
+          )}
+        </div>
         <Card.Body className="contract-card-body">
           <Card.Title>{title}</Card.Title>
           <Card.Text>{description}</Card.Text>
           <Card.Text><strong>Reward:</strong> {reward}</Card.Text>
-          {!isTracked ?
-            <Button variant="primary" onClick={handleTrackClick}>TRACK?</Button> :
+
+          {showTrack && !contractStatus &&
+            <Button variant="primary" onClick={handleTrackClick} disabled={contractStatus} style={{ opacity: contractStatus ? 0.5 : 1 }}>TRACK?</Button>
+          }
+
+          {showEngage &&
             <>
-              {!isEngaged ?
-                <Button variant="success" onClick={handleEngageClick}>ENGAGE?</Button> :
-                <>
-                  <Card.Text><strong>Attack:</strong> {atk}</Card.Text>
-                  <Card.Text><strong>Defense:</strong> {def}</Card.Text>
-                </>
-              }
+              <Button variant="success" onClick={handleEngageClick}>ENGAGE?</Button>
               <Card.Text><strong>Location:</strong> {trackLocation}</Card.Text>
             </>
           }
-          {!isEngaged && <div>
-            <Link to="/dashboard">Back to Dashboard</Link>
-          </div>}
+
+          {showDisengage &&
+            <>
+              <Button variant="danger" onClick={handleDisengageClick}>DISENGAGE?</Button>
+              <Card.Text><strong>Location:</strong> {trackLocation}</Card.Text>
+              <Card.Text><strong>Attack:</strong> {atk}</Card.Text>
+              <Card.Text><strong>Defense:</strong> {def}</Card.Text>
+            </>
+          }
+
+          {!showDisengage && !contractStatus && (
+            <div>
+              <Link to="/dashboard">Back to Dashboard</Link>
+            </div>
+          )}
         </Card.Body>
       </Card>
+
+      {/* Confirmation Modal */}
+      <Modal show={showConfirmModal} onHide={handleCloseClick}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Close</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to close this contract?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseClick}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleConfirmClose}>
+            Confirm
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
@@ -55,143 +116,110 @@ export default ContractCard;
 // import React, { useState } from 'react';
 // import Card from 'react-bootstrap/Card';
 // import Button from 'react-bootstrap/Button';
+// import Modal from 'react-bootstrap/Modal';
 // import { Link } from 'react-router-dom';
 
 // import './ContractCard.css';
 
-// function ContractCard({ image, title, description, reward, trackLocation, onTrack }) {
-//   const [isTracked, setIsTracked] = useState(false);  // State to manage the button and location display
+// function ContractCard({ image, title, description, reward, trackLocation, atk, def, onTrack, onReset, onConfirmClose, contractStatus }) {
+//   const [showTrack, setShowTrack] = useState(true);
+//   const [showEngage, setShowEngage] = useState(false);
+//   const [showDisengage, setShowDisengage] = useState(false);
+//   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
 //   const handleTrackClick = () => {
-//     onTrack();  // This should trigger the handleTrack in CarouselComponent
-//     setIsTracked(true);  // Update the state to reveal the location and switch to "ENGAGE?" button
+//     onTrack();
+//     setShowTrack(false);
+//     setShowEngage(true);
 //   };
-  
 
-//   return (
-//     <div>
-//       <Card className="contract-card">
-//         <Card.Img variant="top" src={image} />
-//         <Card.Body className="contract-card-body">
-//           <Card.Title>{title}</Card.Title>
-//           <Card.Text>{description}</Card.Text>
-//           <Card.Text><strong>Reward:</strong> {reward}</Card.Text>
-//           {!isTracked ?
-//             <Button variant="primary" onClick={handleTrackClick}>TRACK?</Button> :
-//             <>
-//               <Button variant="success">ENGAGE?</Button>
-//               <Card.Text><strong>Location:</strong> {trackLocation}</Card.Text>
-//             </>
-//           }
-//           <div>
-//             <Link to="/dashboard">Back to Dashboard</Link>
-//           </div>
-//         </Card.Body>
-//       </Card>
-//     </div>
-//   );
-// }
+//   const handleEngageClick = () => {
+//     setShowEngage(false);
+//     setShowDisengage(true);
+//   };
 
-// export default ContractCard;
+//   const handleDisengageClick = () => {
+//     setShowConfirmModal(true);
+//   };
 
-// import React, { useState } from 'react';
-// import Card from 'react-bootstrap/Card';
-// import Button from 'react-bootstrap/Button';
-// import { Link } from 'react-router-dom';
+//   const handleCloseClick = () => {
+//     setShowConfirmModal(false);
+//   };
 
-// import './ContractCard.css';
-
-// function ContractCard({ image, title, description, reward, trackLocation, onTrack }) {
-//   const [isTracked, setIsTracked] = useState(false);  // State to manage the button display
-
-//   const handleTrackClick = () => {
-//     onTrack();  // Call the onTrack function passed from the parent component
-//     setIsTracked(true);  // Update the local state to hide the "TRACK?" button and show "ENGAGE?"
+//   const handleConfirmClose = () => {
+//     onConfirmClose();
+//     setShowTrack(false);
+//     setShowEngage(false);
+//     setShowDisengage(false);
+//     setShowConfirmModal(false);
 //   };
 
 //   return (
 //     <div>
 //       <Card className="contract-card">
-//         <Card.Img variant="top" src={image} />
+//         <div className="card-img-container">
+//           <Card.Img variant="top" src={image} />
+//           {contractStatus && (
+//             <div className="contract-overlay">
+//               <img src="/images/closed_contract-01.png" alt="Contract Closed" />
+//             </div>
+//           )}
+//           {showDisengage && (
+//             <Button className="close-button" variant="warning" onClick={handleDisengageClick}>CLOSE?</Button>
+//           )}
+//         </div>
 //         <Card.Body className="contract-card-body">
 //           <Card.Title>{title}</Card.Title>
 //           <Card.Text>{description}</Card.Text>
 //           <Card.Text><strong>Reward:</strong> {reward}</Card.Text>
-//           {!isTracked ? 
-//             <Button variant="primary" onClick={handleTrackClick}>TRACK?</Button> :
+
+//           {showTrack && !contractStatus &&
+//             <Button variant="primary" onClick={handleTrackClick}>TRACK?</Button>
+//           }
+
+//           {showEngage &&
 //             <>
-//               <Button variant="success">ENGAGE?</Button>
+//               <Button variant="success" onClick={handleEngageClick}>ENGAGE?</Button>
 //               <Card.Text><strong>Location:</strong> {trackLocation}</Card.Text>
 //             </>
 //           }
-//           <div>
-//             <Link to="/dashboard">Back to Dashboard</Link>
-//           </div>
+
+//           {showDisengage &&
+//             <>
+//               <Button variant="danger" onClick={handleDisengageClick}>DISENGAGE?</Button>
+//               <Card.Text><strong>Location:</strong> {trackLocation}</Card.Text>
+//               <Card.Text><strong>Attack:</strong> {atk}</Card.Text>
+//               <Card.Text><strong>Defense:</strong> {def}</Card.Text>
+//             </>
+//           }
+
+//           {!showDisengage && !contractStatus && (
+//             <div>
+//               <Link to="/dashboard">Back to Dashboard</Link>
+//             </div>
+//           )}
 //         </Card.Body>
 //       </Card>
+
+//       {/* Confirmation Modal */}
+//       <Modal show={showConfirmModal} onHide={handleCloseClick}>
+//         <Modal.Header closeButton>
+//           <Modal.Title>Confirm Close</Modal.Title>
+//         </Modal.Header>
+//         <Modal.Body>Are you sure you want to close this contract?</Modal.Body>
+//         <Modal.Footer>
+//           <Button variant="secondary" onClick={handleCloseClick}>
+//             Cancel
+//           </Button>
+//           <Button variant="primary" onClick={handleConfirmClose}>
+//             Confirm
+//           </Button>
+//         </Modal.Footer>
+//       </Modal>
+      
 //     </div>
 //   );
 // }
 
 // export default ContractCard;
 
-
-// import React from 'react';
-// import Card from 'react-bootstrap/Card';
-// import Button from 'react-bootstrap/Button';
-// import { Link } from 'react-router-dom';
-
-// import './ContractCard.css';
-
-// function ContractCard({ image, title, description, reward, trackLocation, onTrack }) {
-//   return (
-//     <div>
-//       <Card className="contract-card">
-//         <Card.Img variant="top" src={image} />
-//         <Card.Body className="contract-card-body">
-//           <Card.Title>{title}</Card.Title>
-//           <Card.Text>{description}</Card.Text>
-//           <Card.Text><strong>Reward:</strong> {reward}</Card.Text>
-//           <Button variant="primary" onClick={onTrack}>TRACK?</Button>
-//           <Card.Text><strong>Location:</strong> {trackLocation}</Card.Text>
-
-//           <div>
-//             <Link to="/dashboard">Back to Dashboard</Link>
-//           </div>
-//         </Card.Body>
-//       </Card>
-//     </div>
-//   );
-// }
-
-// export default ContractCard;
-
-// import React from 'react';
-// import Card from 'react-bootstrap/Card';
-// import Button from 'react-bootstrap/Button';
-// import { Link } from 'react-router-dom';
-
-// import './ContractCard.css'; 
-
-// function ContractCard({ image, title, description, reward }) {  // Add 'reward' as a prop here
-//   return (
-//     <div>
-//       <Card className="contract-card">
-//         <Card.Img variant="top" src={image} />
-//         <Card.Body className="contract-card-body">
-//           <Card.Title>{title}</Card.Title>
-//           <Card.Text>{description}</Card.Text>
-//           <Card.Text className="reward-text">
-//             <b>Reward: {reward}</b>
-//           </Card.Text>
-//           <Button variant="primary">TRACK?</Button>
-//           <div>
-//             <Link to="/dashboard">Back to Dashboard</Link>
-//           </div>
-//         </Card.Body>
-//       </Card>
-//     </div>
-//   );
-// }
-
-// export default ContractCard;
